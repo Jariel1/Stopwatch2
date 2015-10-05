@@ -35,6 +35,12 @@
                     android:text="@string/timer"
                     android:id="@+id/timer">
                 </TextView>
+                <TextView style="@style/timerText"
+                    android:text="@string/timerMs"
+                    android:id="@+id/timerMs"
+                    android:textSize="30sp"
+                    android:paddingTop="30sp">
+                </TextView>
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -56,7 +62,8 @@
                     android:shadowColor="#DF726E"
                     android:text="@string/stopText"
                     android:id="@+id/stopButton"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    android:onClick="stopClick">
                 </Button>
                 <Button
                     android:layout_marginLeft="5dp"
@@ -68,7 +75,8 @@
                     android:shadowColor="#FBEBC5"
                     android:layout_weight="1"
                     android:text="@string/startText"
-                    android:id="@+id/startButton">
+                    android:id="@+id/startButton"
+                    android:onClick="startClick">
                 </Button>
                 <Button
                     android:layout_marginRight="5dp"
@@ -80,7 +88,8 @@
                     android:textColor="#2E2E2E"
                     android:shadowColor="#959597"
                     android:text="@string/resetText"
-                    android:id="@+id/resetButton">
+                    android:id="@+id/resetButton"
+                    android:onClick="resetClick">
                 </Button>
             </LinearLayout>
             <LinearLayout
