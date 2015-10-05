@@ -27,11 +27,7 @@
                 android:id="@+id/timerBackground"
                 android:background="@drawable/timerbackground">
                 <TextView
-                    android:textColor="#004254"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="60sp"
+                    style="@style/timerText"
                     android:text="@string/timer"
                     android:id="@+id/timer">
                 </TextView>
@@ -51,13 +47,10 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/buttonarea">
                 <Button
+                    style="@style/buttonText"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:background="@drawable/stopbuttonstates"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
                     android:textColor="#7A1100"
                     android:shadowColor="#DF726E"
                     android:text="@string/stopText"
@@ -66,25 +59,19 @@
                     android:onClick="stopClick">
                 </Button>
                 <Button
+                    style="@style/buttonText"
                     android:layout_marginLeft="5dp"
                     android:background="@drawable/startbuttonstates"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:textColor="#5F3A00"
                     android:shadowColor="#FBEBC5"
-                    android:layout_weight="1"
                     android:text="@string/startText"
                     android:id="@+id/startButton"
                     android:onClick="startClick">
                 </Button>
                 <Button
+                    style="@style/buttonText"
                     android:layout_marginRight="5dp"
                     android:background="@drawable/resetbuttonstates"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
                     android:textColor="#2E2E2E"
                     android:shadowColor="#959597"
                     android:text="@string/resetText"
@@ -112,8 +99,7 @@
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/scrollView">
                 <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    style="@style/backgroundText"
                     android:text="@string/backgroundText"
                     android:id="@+id/backgroundText">
                 </TextView>
