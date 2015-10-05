@@ -47,7 +47,7 @@
                 <Button
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/stopbutton"
+                    android:background="@drawable/stopbuttonstates"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -60,7 +60,7 @@
                 </Button>
                 <Button
                     android:layout_marginLeft="5dp"
-                    android:background="@drawable/startbutton"
+                    android:background="@drawable/startbuttonstates"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -72,7 +72,7 @@
                 </Button>
                 <Button
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/resetbutton"
+                    android:background="@drawable/resetbuttonstates"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
