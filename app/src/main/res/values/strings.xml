@@ -9,6 +9,5 @@
     <string name="startText">start</string>
     <string name="resetText">reset</string>
     <string name="stopText">stop</string>
-    <string name="backgroundText">Stopwatch</string>
-    <string name="adsText">Ads Go Here</string>
+    <string name="uploadText">upload</string>
 </resources>

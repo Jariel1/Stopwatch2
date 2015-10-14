@@ -1,5 +1,7 @@
 package com.masterarbeit.alb.stopwatch2;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -9,9 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tempTextView; //Temporary TextView - See more at: http://www.shawnbe.com/index.php/tutorial/tutorial-3-a-simple-stopwatch-lets-add-the-code/#sthash.7g9XMKOF.dpuf
+    private TextView tempTextView;
     private Button tempBtn; //Temporary Button
     private Handler mHandler = new Handler();
     private long startTime;
@@ -20,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private String hours,minutes,seconds,milliseconds;
     private long secs,mins,hrs,msecs;
     private boolean stopped = false;
+    SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy HH:mm");
+    String currentDateandTime = sdf.format(new Date());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +57,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void startClick (View view){ showStopButton();
+    public void startClick (View view){
+        showStopButton();
         if(stopped){
             startTime = System.currentTimeMillis() - elapsedTime; }
         else{
             startTime = System.currentTimeMillis(); }
         mHandler.removeCallbacks(startTimer);
         mHandler.postDelayed(startTimer, 0);
+        currentDateandTime = sdf.format(new Date());
     }
 
     public void stopClick (View view){
@@ -65,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void resetClick (View view){
+        hideUploadButton();
         stopped = false;
         ((TextView)findViewById(R.id.timer)).setText("00:00:00");
         ((TextView)findViewById(R.id.timerMs)).setText(".0");
@@ -72,12 +83,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void showStopButton(){
         findViewById(R.id.startButton).setVisibility(View.GONE);
+        findViewById(R.id.uploadButton).setVisibility(View.GONE);
         findViewById(R.id.resetButton).setVisibility(View.GONE);
         findViewById(R.id.stopButton).setVisibility(View.VISIBLE);
     }
 
     private void hideStopButton(){
+        findViewById(R.id.startButton).setVisibility(View.GONE);
+        findViewById(R.id.uploadButton).setVisibility(View.VISIBLE);
+        findViewById(R.id.resetButton).setVisibility(View.VISIBLE);
+        findViewById(R.id.stopButton).setVisibility(View.GONE);
+    }
+
+    private void hideUploadButton(){
         findViewById(R.id.startButton).setVisibility(View.VISIBLE);
+        findViewById(R.id.uploadButton).setVisibility(View.GONE);
         findViewById(R.id.resetButton).setVisibility(View.VISIBLE);
         findViewById(R.id.stopButton).setVisibility(View.GONE);
     }
@@ -94,5 +114,23 @@ public class MainActivity extends AppCompatActivity {
     private Runnable startTimer = new Runnable() { public void run() { elapsedTime = System.currentTimeMillis() - startTime; updateTimer(elapsedTime); mHandler.postDelayed(this,REFRESH_RATE); } };
 
 
+    public void uploadClick(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
+        builder.setTitle("Wartezeitupload").setMessage("Wartezeit von " + seconds + " Sekunden hochladen? Anfang: " + currentDateandTime);
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        });
+        builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+
+
+        builder.show();  //<-- See This!
+    }
 }

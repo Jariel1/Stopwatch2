@@ -71,6 +71,20 @@
                     android:height="100dp"
                     android:layout_margin="5dp">
                 </Button>
+
+                <Button
+                    style="@style/buttonText"
+                    android:background="@drawable/uploadbuttonstates"
+                    android:textColor="#FFFFFF"
+                    android:shadowColor="#FBEBC5"
+                    android:text="@string/uploadText"
+                    android:id="@+id/uploadButton"
+                    android:onClick="uploadClick"
+                    android:height="100dp"
+                    android:layout_margin="5dp"
+                    android:visibility="gone">
+                </Button>
+
                 <Button
                     style="@style/buttonText"
                     android:background="@drawable/resetbuttonstates"
