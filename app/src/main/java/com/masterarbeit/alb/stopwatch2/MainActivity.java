@@ -1,6 +1,7 @@
 package com.masterarbeit.alb.stopwatch2;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,14 +34,20 @@ public class MainActivity extends AppCompatActivity {
     private String hours,minutes,seconds,milliseconds;
     private long secs,mins,hrs,msecs;
     private boolean stopped = false;
-    SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy HH:mm");
-    String currentDateandTime = sdf.format(new Date());
-
+    SimpleDateFormat uhrzeitFormat = new SimpleDateFormat("HH:mm:ss");
+    SimpleDateFormat datumFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String uhrzeit = uhrzeitFormat.format(new Date());
+    String datum = datumFormat.format(new Date());
+    String wartezeit = "0";
+    ProgressDialog prgDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        prgDialog = new ProgressDialog(this);
+        prgDialog.setMessage("Bitte warten...");
+        prgDialog.setCancelable(false);
     }
 
     @Override
@@ -65,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
             startTime = System.currentTimeMillis(); }
         mHandler.removeCallbacks(startTimer);
         mHandler.postDelayed(startTimer, 0);
-        currentDateandTime = sdf.format(new Date());
+        uhrzeit = uhrzeitFormat.format(new Date());
+        datum = datumFormat.format(new Date());
     }
 
     public void stopClick (View view){
@@ -116,12 +132,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void uploadClick(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-
-        builder.setTitle("Wartezeitupload").setMessage("Wartezeit von " + seconds + " Sekunden hochladen? Anfang: " + currentDateandTime);
+        long wartezeitlong = elapsedTime /60000;
+        final String wartezeit =  Long.toString(wartezeitlong);
+        builder.setTitle("Wartezeitupload").setMessage("Wartezeit von " + mins + ":" + secs + " Minuten hochladen? Anfang: " + datum + " " + uhrzeit);
 
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
+                hochladen(wartezeit);
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(MainActivity.this);
+                builder2.setTitle("Danke").setMessage("Upload erfolgreich");
+                builder2.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+                builder2.show();
             }
         });
         builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
@@ -133,4 +158,39 @@ public class MainActivity extends AppCompatActivity {
 
         builder.show();  //<-- See This!
     }
+
+    public void hochladen(String wartezeit){
+        RequestParams params = new RequestParams();
+        params.put("datum", datum);
+        params.put("uhrzeit", uhrzeit);
+        params.put("wartezeit", wartezeit);
+        updateDB(params);
+    }
+
+public void updateDB(RequestParams params){
+    prgDialog.show();
+    AsyncHttpClient client = new AsyncHttpClient();
+    client.get("http://192.168.2.111:8080/wartezeiten/update/doupdate", params, new AsyncHttpResponseHandler() {
+
+        @Override
+        public void onSuccess(String response) {
+            prgDialog.hide();
+            try {
+                JSONObject obj = new JSONObject(response);
+                Toast.makeText(getApplicationContext(), obj.getString("antwort"), Toast.LENGTH_LONG).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailure(int statusCode, Throwable error,
+                              String content) {
+            prgDialog.hide();
+            Toast.makeText(getApplicationContext(), "Unexpected Error occcured!", Toast.LENGTH_LONG).show();
+        }
+    });
+
+}
+
 }
